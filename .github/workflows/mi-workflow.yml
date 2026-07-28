@@ -1,0 +1,33 @@
+name: Workflow de Alyzon
+
+on:
+  push:
+    branches: [ "*" ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Crear archivo
+        run: |
+          dir="doc"
+          if [ ! -d $dir ]; then
+              echo " Hola Mundo "
+              mkdir -p $dir
+              cd $dir
+              echo " Hola Mundo " > README.md
+              cd ..
+          fi
+
+      - name: Guardar cambios y subir a GitHub
+        run: |
+          git config --global user.name "Alyzon23"
+          git config --global user.email "alyzon@gmail.com"
+          git add .
+          git commit -m "Doc: agregando un archivo README al directorio doc" || echo "No hay cambios para guardar"
+          git push
